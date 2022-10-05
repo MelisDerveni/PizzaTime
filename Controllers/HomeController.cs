@@ -101,6 +101,11 @@ public class HomeController : Controller
       //  ViewBag.PastOrders = _context.Orders.Include(e => e.Creator).OrderByDescendig(e => e.createdAt);
         return View();
     }
+    [HttpGet("YourOrder")]
+    public IActionResult YourOrder()
+    {
+        return View();
+    }
     
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

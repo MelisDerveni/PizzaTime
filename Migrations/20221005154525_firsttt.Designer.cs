@@ -11,8 +11,8 @@ using PizzaTime.Models;
 namespace PizzaTime.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20221003130706_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20221005154525_firsttt")]
+    partial class firsttt
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,42 @@ namespace PizzaTime.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("PizzaTime.Models.Pizza", b =>
+                {
+                    b.Property<int>("PizzaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Crust")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Quantity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Toppings")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("PizzaId");
+
+                    b.ToTable("Pizzas");
+                });
 
             modelBuilder.Entity("PizzaTime.Models.User", b =>
                 {

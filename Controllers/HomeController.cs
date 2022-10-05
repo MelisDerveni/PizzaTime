@@ -96,6 +96,31 @@ public class HomeController : Controller
         return View("Register");
     }
 
+    public IActionResult Order()
+    {
+        return View();
+    }
+
+    public IActionResult Account()
+    {
+        return View();
+    }
+    [HttpPost("Home/CreatePizza")]
+    public IActionResult CreatePizza(Pizza FromView, string Toppings)
+    {   
+        if(ModelState.IsValid)
+        {
+
+            FromView.Toppings=Toppings;
+            _context.Pizzas.Add(FromView);
+            _context.SaveChanges();
+           return RedirectToAction ("Index");
+        }
+        else{
+            return View("Order");
+        }
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

@@ -167,6 +167,7 @@ public class HomeController : Controller
     [HttpGet("PastOrders")]
     public IActionResult PastOrders()
     {   
+        ViewBag.PastOrders = _context.Pizzas.OrderByDescending(e => e.CreatedAt).ToList();
         return View();
     }
     [HttpGet("Home/AllOrders")]

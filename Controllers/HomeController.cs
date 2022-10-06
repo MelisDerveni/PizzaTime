@@ -98,7 +98,7 @@ public class HomeController : Controller
     [HttpGet("PastOrders")]
     public IActionResult PastOrders()
     {   
-      //  ViewBag.PastOrders = _context.Orders.Include(e => e.Creator).OrderByDescendig(e => e.createdAt);
+      //ViewBag.PastOrders = _context.Pizzas.Include(e => e.PizzaId).OrderByDescending(e => e.CreatedAt);
         return View();
     }
     [HttpGet("YourOrder")]
@@ -106,7 +106,6 @@ public class HomeController : Controller
     {
         return View();
     }
-    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

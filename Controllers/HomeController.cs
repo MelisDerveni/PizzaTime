@@ -19,11 +19,11 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-         if (HttpContext.Session.GetInt32("userId") == null)
+        if (HttpContext.Session.GetInt32("userId") == null)
         {
             return RedirectToAction("Register");
         }
-        return View();
+        return View("Dashboard");
     }
 
     [HttpGet("Register")]
@@ -33,7 +33,7 @@ public class HomeController : Controller
         {
             return View();
         }
-        return RedirectToAction("Index");
+        return RedirectToAction("Dashboard");
     }
 
     [HttpPost("Register")]
@@ -53,7 +53,7 @@ public class HomeController : Controller
             _context.Users.Add(user);
             _context.SaveChanges();
             HttpContext.Session.SetInt32("userId", user.UserId);
-            return RedirectToAction();
+            return RedirectToAction("Dashboard");
         }
         return View();
     }
@@ -91,10 +91,67 @@ public class HomeController : Controller
             }
             HttpContext.Session.SetInt32("userId", userInDb.UserId);
 
-            return RedirectToAction();
+            return RedirectToAction("Dashboard");
         }
         return View("Register");
     }
+    [HttpGet("Dashboard")]
+    public IActionResult Dashboard()
+    {
+        return View();
+    }
+    [HttpPost("CreatePizza")]
+    public IActionResult CreatePizza(Pizza FromView, string Toppings)
+    {   
+        if(ModelState.IsValid)
+        {
+            User LoggedInUser = _context.Users.First(c=>c.UserId == (int)HttpContext.Session.GetInt32("userId"));
+            
+
+            FromView.Toppings=Toppings;
+            _context.Pizzas.Add(FromView);
+            LoggedInUser.FavouritePizzas.Add(FromView);
+            _context.SaveChanges();
+        return RedirectToAction ("Dashboard");
+        }
+        else{
+            return View("Order");
+        }
+    }
+    [HttpGet("Order")]
+    public IActionResult Order()
+    {
+        return View();
+    }
+    [HttpGet("Account")]
+    public IActionResult Account()
+    {
+        ViewBag.LoggedInUser =  _context.Users.First(c=>c.UserId == (int)HttpContext.Session.GetInt32("userId"));
+        return View();
+    }
+    [HttpPost("UpdateUser/{id}")]
+    public IActionResult UpdateUser(int Userid, User EditedUser)
+    {
+        if(ModelState.IsValid)
+        {
+        User RetrievedUser = _context.Users.FirstOrDefault(user => user.UserId == Userid);
+        RetrievedUser = EditedUser;
+        _context.SaveChanges();
+        return RedirectToAction("Dashboard");
+        }
+        else{
+            Console.WriteLine(EditedUser.FirstName);
+            Console.WriteLine(EditedUser.Lastname);
+            Console.WriteLine(EditedUser.Email);
+            Console.WriteLine(EditedUser.City);
+            Console.WriteLine(EditedUser.State);
+            Console.WriteLine(EditedUser.Password);
+
+            return View("Account");
+        }
+        
+    }
+    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

@@ -1,0 +1,103 @@
+@model Pizza
+
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="a navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Order">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Account">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="submit" class="btn btn-secondary "> <a class="nav-link text-dark" asp-area=""
+                                asp-controller="Home" asp-action="Logout">Logout</a></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="text-center border-bottom">
+    <h1 class="display-4">CRAFT-A-PIZZA</h1>
+</div>
+
+
+<form class="c px-md-2 mx-auto " method="post" action="CreatePizza">
+    <div class="form-outline mb-4 ">
+        <select class="col-7 select" asp-for="Method">
+            <option value="1" disabled>METHOD</option>
+            <option value="2">Carry-Out</option>
+            <option value="3">Sit-Here</option>
+            <option value="4">Delivery</option>
+        </select>
+    </div>
+
+    <div class="form-outline mb-4 ">
+        <select class="col-2 select" asp-for="Size">
+            <option value="1" disabled>SIZE</option>
+            <option value="2">Small</option>
+            <option value="3">Medium</option>
+            <option value="4">Large</option>
+        </select>
+
+        <select class="col-2 select" asp-for="Crust">
+            <option value="1" disabled>CRUST</option>
+            <option value="2">Thin</option>
+            <option value="3">Medium</option>
+            <option value="4">Thick</option>
+        </select>
+
+        <select class="col-2 select" asp-for="Quantity">
+            <option value="1" disabled>QUANTITY</option>
+            <option value="2">One</option>
+            <option value="3">Two</option>
+            <option value="4">Three</option>
+        </select>
+    </div>
+    <div class="row ">
+        <div class="col-sm-6 mb-4 ">
+            <legend>CHOOSE YOUR TOPPINGS:</legend>
+            Ham<input type="checkbox" value="Ham">
+            Mushroom<input type="checkbox" value="Mushroom">
+            Cheese<input type="checkbox" value="Cheese">
+            Sausage<input type="checkbox" value="Sausage">
+            Onion<input type="checkbox" value="Onion">
+            Green Pepper<input type="checkbox" value="Green Pepper">
+            Black Olives<input type="checkbox" value="Black Olives">
+            Fresh Garlic<input type="checkbox" value="Fresh Garlic">
+            Tomato<input type="checkbox" value="Tomato">
+            Fresh Basil<input type="checkbox" value="Fresh Basil">
+            Pepperoni<input type="checkbox" value="Pepperoni">
+            Sea Food<input type="checkbox" value="Sea Food">
+            <input type="hidden" id="SkillID" name="Toppings">
+        </div>
+
+    </div>
+    <button type="submit" class="btn btn-success btn-lg mb-1" onclick="updatemark()">Submit</button>
+</form>
+
+<script>
+    function updatemark(arg) {
+        var abc = ""
+        //Iterating the collection of checkboxes which checked marked  
+        $('input[type=checkbox]').each(function () {
+            if (this.checked) {
+                abc = abc + $(this).val() + ","
+                //assign set value to hidden field   
+                $('#SkillID').val(abc);
+            }
+        });
+
+    }  
+</script>

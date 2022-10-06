@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="d-flex justify-content-between ">
+    <h1>Pizza Ninja's</h1>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="a navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="Dashboard">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="AllOrders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="Account">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="submit" class="btn btn-secondary "> <a class="nav-link text-dark" href="Account">Logout</a></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+</div>
+<h3 class="text-center">Quick Options</h3>
+
+<div class="b row">
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Lorem, ipsum dolor.</h5>
+                <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur soluta porro
+                    pariatur. Veniam amet, asperiores suscipit animi quibusdam omnis quas unde harum fugit nemo!
+                    Eligendi dolore temporibus eaque autem voluptatum!</p>
+                <a href="Order"  class="btn btn-primary ">New Order</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Lorem, ipsum dolor.</h5>
+                <p class="card-text">Lorem Lorem Lorem Lorem Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Reiciendis delectus nisi at similique ipsa animi praesentium quidem itaque dolore eaque, tempore
+                    quos optio velit a odit culpa iste sit quibusdam.</p>
+                <a asp-action="#" asp-controller="Home" class="btn btn-primary">Re-Order my Fav</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Lorem, ipsum dolor.</h5>
+                <p class="card-text">Lorem Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et, consectetur
+                    harum alias adipisci blanditiis iure corporis? Vero tempore repudiandae possimus repellat nostrum,
+                    dolorum at ad aspernatur, doloremque, cumque quibusdam natus!</p>
+                <a asp-action="#" asp-controller="Home" class="btn btn-primary">Surprise Me</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

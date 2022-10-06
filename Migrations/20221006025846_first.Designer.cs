@@ -11,8 +11,8 @@ using PizzaTime.Models;
 namespace PizzaTime.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20221003130706_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20221006025846_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,15 +21,52 @@ namespace PizzaTime.Migrations
                 .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("PizzaTime.Models.Pizza", b =>
+                {
+                    b.Property<int>("PizzaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Crust")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Quantity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Toppings")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PizzaId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Pizzas");
+                });
+
             modelBuilder.Entity("PizzaTime.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -64,6 +101,22 @@ namespace PizzaTime.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("PizzaTime.Models.Pizza", b =>
+                {
+                    b.HasOne("PizzaTime.Models.User", "Creator")
+                        .WithMany("FavouritePizzas")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("PizzaTime.Models.User", b =>
+                {
+                    b.Navigation("FavouritePizzas");
                 });
 #pragma warning restore 612, 618
         }

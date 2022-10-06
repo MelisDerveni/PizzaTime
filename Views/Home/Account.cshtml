@@ -1,0 +1,75 @@
+@model User
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="a navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="Dashboard">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="AllOrders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="Account">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="submit" class="btn btn-secondary "> <a class="nav-link text-dark" href="Account">Logout</a></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="col-sm-6">
+    <form action="UpdateUser/@ViewBag.LoggedInUser.UserId" method="post" class="col-sm-8">
+    <div class="row">
+        <div class="d-flex justify-content-between">
+            <div class="form-outline mb-4">
+
+                <input type="text" asp-for="FirstName" class="form-control form-control-lg" />
+                <span asp-validation-for="FirstName"></span>
+                <label class="form-label" asp-for="FirstName"></label>
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="text" asp-for="Lastname" id="form3Example1cg" class="form-control form-control-lg" />
+                <label class="form-label" asp-for="Lastname" for="form3Example1cg"> Last Name</label>
+                <span asp-validation-for="Lastname"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-outline mb-4">
+        <input type="email" asp-for="Email" id="form3Example1cg" class="form-control form-control-lg" />
+        <label class="form-label" asp-for="Email" for="form3Example1cg">Email</label>
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-between">
+            <div class="form-outline mb-4">
+                <input type="text" asp-for="City" id="form3Example1cg" class="form-control form-control-lg" />
+                <label class="form-label" asp-for="City" for="form3Example1cg">City</label>
+                <span asp-validation-for="City"></span>
+            </div>
+            <div class="form-outline mb-4">
+                <select asp-for="State">
+                    <option value="AL">AL</option>
+                    <option value="RKS">RKS</option>
+                </select>
+                <label class="form-label" asp-for="State" for="form3Example1cg">State</label>
+                <span asp-validation-for="State"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-outline mb-4">
+        <input type="password" asp-for="Password" id="form3Example1cg" class="form-control form-control-lg" />
+        <label class="form-label" asp-for="Password" for="form3Example1cg">Password</label>
+        <span asp-validation-for="Password"></span>
+    </div>
+    <button type="submit" class="btn btn-success btn-block btn-lg form-control ">Update</button>
+</form>
+</div>

@@ -1,15 +1,22 @@
 
 
 <h1>YOUR ORDER</h1>
+@foreach (var item in ViewBag.Order.PizzaOrdered)
+{
+<p>METHOD: @item.Method </p>
+<P>Quantity: @item.Quantity</P>
+<p>Size: @item.Size</p>
+<p>Crust: @item.Crust</p>
+<p>Toppings: @item.Toppings</p>  
 
-<p>METHOD: </p>
-<P>Quantity: </P>
-<p>Size: </p>
-<p>Crust: </p>
-<p>Toppings: </p>
 
-<h4 class="borderDown col-sm-6 text-center">PRICE </h4>
-<h3 class="col-sm-6 text-center"> TOTAL</h3>
+
+}
+  <h4 class="borderDown col-sm-6 text-center">PRICE 20$ </h4>
+<h3 class="col-sm-6 text-center"> TOTAL 20$</h3> 
+
+
+
 <div class="row buttons">
     <a href="" class="btn btn-danger col-sm-3">START OVER</a> <a href="" class="btn btn-success col-sm-3">PURCHASE</a>
 </div>

@@ -13,4 +13,14 @@ public class MyContext : DbContext
     // public DbSet<Monster> Monsters { get; set; } 
     public DbSet<User> Users { get; set; }
     public DbSet<Pizza> Pizzas { get; set; }
+    public DbSet<Order> Orders { get; set; }
+
+    
+          protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+    
+        modelBuilder.Entity<Pizza>()
+        .HasOne(p => p.Order)
+        .WithMany(p => p.PizzaOrdered);
+    }
 }

@@ -1,15 +1,15 @@
 
 <h1 class="mb-5">Past Orders</h1>
-@foreach (var item in ViewBag.PastOrders.PizzaOrdered)
+@foreach (var item2 in ViewBag.PastOrders)
 {
 
     <div class="row ">
-    <p class="col-sm-3">Date @item.CreatedAt</p>  <p class="col-sm-2"> <input type="checkbox"> <label  for="Favorite" >Favorite</label></p>
+    <p class="col-sm-3">Date: @item2.CreatedAt</p>  <p class="col-sm-2"> <input type="checkbox"> <label  for="Favorite" >Favorite</label></p>
    
 </div>
 
 <div class="row borderDown col-sm-7">
-     <p class="col-sm-5">Size @item.Size - Toppings @item.Toppings</p> <p class="col-sm-2">Price $</p>
+     <p class="col-sm-5">Size: @item2.Size - Toppings: @item2.Toppings</p> <p class="col-sm-2">Price: 20$</p>
 </div>
     
 }

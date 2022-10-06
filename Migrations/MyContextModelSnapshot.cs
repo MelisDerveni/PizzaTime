@@ -19,6 +19,26 @@ namespace PizzaTime.Migrations
                 .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("PizzaTime.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("TotalPrize")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("PizzaTime.Models.Pizza", b =>
                 {
                     b.Property<int>("PizzaId")
@@ -35,6 +55,9 @@ namespace PizzaTime.Migrations
                     b.Property<string>("Method")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Quantity")
                         .IsRequired()
@@ -54,6 +77,8 @@ namespace PizzaTime.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("PizzaId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -103,6 +128,12 @@ namespace PizzaTime.Migrations
 
             modelBuilder.Entity("PizzaTime.Models.Pizza", b =>
                 {
+                    b.HasOne("PizzaTime.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PizzaTime.Models.User", "Creator")
                         .WithMany("FavouritePizzas")
                         .HasForeignKey("UserId")
@@ -110,6 +141,8 @@ namespace PizzaTime.Migrations
                         .IsRequired();
 
                     b.Navigation("Creator");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("PizzaTime.Models.User", b =>

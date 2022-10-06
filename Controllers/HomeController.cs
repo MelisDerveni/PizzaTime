@@ -103,16 +103,29 @@ public class HomeController : Controller
     [HttpPost("CreatePizza")]
     public IActionResult CreatePizza(Pizza FromView, string Toppings)
     {   
+         if (HttpContext.Session.GetInt32("userId") == null)
+        {
+            return RedirectToAction("Register");
+        }
+        
+        
         if(ModelState.IsValid)
         {
             User LoggedInUser = _context.Users.First(c=>c.UserId == (int)HttpContext.Session.GetInt32("userId"));
-            
+            Order NewOrder = new Order{
+                TotalPrize = 20
+
+            };
 
             FromView.Toppings=Toppings;
+            FromView.Order = NewOrder;
+            FromView.OrderId = NewOrder.OrderId;
             _context.Pizzas.Add(FromView);
             LoggedInUser.FavouritePizzas.Add(FromView);
+            
+            NewOrder.PizzaOrdered.Add(FromView);
             _context.SaveChanges();
-        return RedirectToAction ("Dashboard");
+        return RedirectToAction ("AllOrders");
         }
         else{
             return View("Order");
@@ -154,12 +167,13 @@ public class HomeController : Controller
     [HttpGet("PastOrders")]
     public IActionResult PastOrders()
     {   
-      //  ViewBag.PastOrders = _context.Orders.Include(e => e.Creator).OrderByDescendig(e => e.createdAt);
         return View();
     }
-    [HttpGet("YourOrder")]
+    [HttpGet("Home/AllOrders")]
     public IActionResult YourOrder()
     {
+        ViewBag.Order = _context.Orders.Include(c=>c.PizzaOrdered).OrderBy(e => e.CreatedAt).Last(e=> e.PizzaOrdered.Any(c=>c.UserId == (int)HttpContext.Session.GetInt32("userId")) );
+
         return View();
     }
 

@@ -177,8 +177,26 @@ public class HomeController : Controller
 
         return View();
     }
-
+    [HttpGet("Success")]
+    public IActionResult Success()
+    {
+        return View();
+    }
     
+    [HttpGet("Delete/{id}")]
+    public IActionResult Delete(int id)
+    {
+               
+        if (HttpContext.Session.GetInt32("userId") == null)
+        {
+            return RedirectToAction("Register");
+        }
+        Pizza removePizza = _context.Pizzas.First(e => e.PizzaId == id);
+        int idFromSession = (int)HttpContext.Session.GetInt32("userId");   
+        _context.Pizzas.Remove(removePizza);
+        _context.SaveChanges();
+       return RedirectToAction("Dashboard");
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

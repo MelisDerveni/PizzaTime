@@ -88,15 +88,19 @@
 <script>  
     function updatemark(arg)  
     {  
-        var abc = ""  
+        var abc = "";
+        var inputCheckboxListLength = $('input[type=checkbox]').length;
 //Iterating the collection of checkboxes which checked marked  
-        $('input[type=checkbox]').each(function () {  
+        $('input[type=checkbox]').each(function (index, elem) {  
             if (this.checked) {  
-                abc = abc + $(this).val() + ","  
+                abc += $(this).val();
+                if(index < (inputCheckboxListLength - 1)) {
+                    abc += ', ';
+                } 
                 //assign set value to hidden field   
                  $('#SkillID').val(abc);  
             }  
-        });  
-          
+            
+        });
     }  
 </script>

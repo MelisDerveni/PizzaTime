@@ -1,39 +1,11 @@
 
 <h1 class="mb-5">Past Orders</h1>
-@foreach (var item in ViewBag.Pizzas)
-{
-    
-    <div class="row ">
-    <p class="col-sm-3">Date: @item.CreatedAt</p>  <p class="col-sm-2"> 
-    <input type="checkbox"  checked onclick="location.href='RemoveFavorite/@item.PizzaId';" > 
-    <label  for="Favorite" >Favorite</label>
-        
-        
-    </p>
 
+<div class="row ">
+    <p class="col-sm-3">Date</p>  <p class="col-sm-2"> <input type="checkbox"> <label  for="Favorite" >Favorite</label></p>
+   
 </div>
 
 <div class="row borderDown col-sm-7">
-    <p class="col-sm-5">Size: @item.Size - Toppings: @item.Toppings</p> <p class="col-sm-2">Price: 20$</p>
+     <p class="col-sm-5">Size - Toppings</p> <p class="col-sm-2">Price $</p>
 </div>
-    
-}
-@foreach (var item in ViewBag.NotFavorited)
-{
-    
-    <div class="row ">
-    <p class="col-sm-3">Date: @item.CreatedAt</p>  <p class="col-sm-2"> 
-    <input type="checkbox"  onclick="location.href='AddFavorite/@item.PizzaId';" > 
-    <label  for="Favorite" >Favorite</label>
-        
-        
-    </p>
-
-</div>
-
-<div class="row borderDown col-sm-7">
-    <p class="col-sm-5">Size: @item.Size - Toppings: @item.Toppings</p> <p class="col-sm-2">Price: 20$</p>
-</div>
-    
-}
-

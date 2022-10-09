@@ -103,6 +103,12 @@ public class HomeController : Controller
     [HttpPost("CreatePizza")]
     public IActionResult CreatePizza(Pizza FromView, string Toppings)
     {   
+         if (HttpContext.Session.GetInt32("userId") == null)
+        {
+            return RedirectToAction("Register");
+        }
+        
+        
         if (HttpContext.Session.GetInt32("userId") == null)
         {
             return RedirectToAction("Register");
@@ -121,6 +127,8 @@ public class HomeController : Controller
             FromView.Order = NewOrder;
             FromView.OrderId = NewOrder.OrderId;
             FromView.UserId = LoggedInUser.UserId;
+            FromView.Order = NewOrder;
+            FromView.OrderId = NewOrder.OrderId;
             _context.Pizzas.Add(FromView);
 
             // LoggedInUser.FavouritePizzas.Add(FromView);
@@ -263,8 +271,21 @@ public class HomeController : Controller
         
         return View();
     }
-
     
+    [HttpGet("Delete/{id}")]
+    public IActionResult Delete(int id)
+    {
+               
+        if (HttpContext.Session.GetInt32("userId") == null)
+        {
+            return RedirectToAction("Register");
+        }
+        Pizza removePizza = _context.Pizzas.First(e => e.PizzaId == id);
+        int idFromSession = (int)HttpContext.Session.GetInt32("userId");   
+        _context.Pizzas.Remove(removePizza);
+        _context.SaveChanges();
+       return RedirectToAction("Dashboard");
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

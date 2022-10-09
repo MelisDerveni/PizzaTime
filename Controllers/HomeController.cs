@@ -103,16 +103,31 @@ public class HomeController : Controller
     [HttpPost("CreatePizza")]
     public IActionResult CreatePizza(Pizza FromView, string Toppings)
     {   
+        if (HttpContext.Session.GetInt32("userId") == null)
+        {
+            return RedirectToAction("Register");
+        }
+        
+        
         if(ModelState.IsValid)
         {
             User LoggedInUser = _context.Users.First(c=>c.UserId == (int)HttpContext.Session.GetInt32("userId"));
-            
+            Order NewOrder = new Order{
+                TotalPrize = 20
+
+            };
 
             FromView.Toppings=Toppings;
+            FromView.Order = NewOrder;
+            FromView.OrderId = NewOrder.OrderId;
+            FromView.UserId = LoggedInUser.UserId;
             _context.Pizzas.Add(FromView);
-            LoggedInUser.FavouritePizzas.Add(FromView);
+
+            // LoggedInUser.FavouritePizzas.Add(FromView);
+            
+            NewOrder.PizzaOrdered.Add(FromView);
             _context.SaveChanges();
-        return RedirectToAction ("Dashboard");
+        return RedirectToAction ("AllOrders");
         }
         else{
             return View("Order");
@@ -135,17 +150,17 @@ public class HomeController : Controller
         if(ModelState.IsValid)
         {
         User RetrievedUser = _context.Users.FirstOrDefault(user => user.UserId == Userid);
-        RetrievedUser = EditedUser;
+        RetrievedUser.FirstName = EditedUser.FirstName;
+        RetrievedUser.Lastname = EditedUser.Lastname;
+        RetrievedUser.Email = EditedUser.Email;
+        RetrievedUser.City = EditedUser.City;
+        RetrievedUser.State = EditedUser.State;
+        RetrievedUser.Password = EditedUser.Password;
+
         _context.SaveChanges();
         return RedirectToAction("Dashboard");
         }
         else{
-            Console.WriteLine(EditedUser.FirstName);
-            Console.WriteLine(EditedUser.Lastname);
-            Console.WriteLine(EditedUser.Email);
-            Console.WriteLine(EditedUser.City);
-            Console.WriteLine(EditedUser.State);
-            Console.WriteLine(EditedUser.Password);
 
             return View("Account");
         }
@@ -154,12 +169,98 @@ public class HomeController : Controller
     [HttpGet("PastOrders")]
     public IActionResult PastOrders()
     {   
-      //  ViewBag.PastOrders = _context.Orders.Include(e => e.Creator).OrderByDescendig(e => e.createdAt);
+        ViewBag.Pizzas = _context.Pizzas.Where(c=>c.LikerId ==(int)HttpContext.Session.GetInt32("userId") ).ToList();
+        List<Pizza> Favorites = _context.Pizzas.Where(c=>c.LikerId ==(int)HttpContext.Session.GetInt32("userId") ).ToList();
+        ViewBag.PastOrders = _context.Pizzas.Include(c=>c.Creator).Where(c=>c.Creator.UserId == (int)HttpContext.Session.GetInt32("userId")).OrderByDescending(e => e.CreatedAt).ToList();
+        List<Pizza> NotFavorited = ViewBag.PastOrders;
+        ViewBag.NotFavorited = NotFavorited.Except(Favorites).ToList();
+
+        
         return View();
     }
-    [HttpGet("YourOrder")]
+    [HttpGet("Home/AllOrders")]
     public IActionResult YourOrder()
     {
+        ViewBag.Order = _context.Orders.Include(c=>c.PizzaOrdered).OrderBy(e => e.CreatedAt).Last(e=> e.PizzaOrdered.Any(c=>c.UserId == (int)HttpContext.Session.GetInt32("userId")) );
+
+        return View();
+    }
+    [HttpGet("RemoveFavorite/{id}")]
+    public IActionResult RemoveFavorite(int id)
+    {
+        Pizza ToRemove = _context.Pizzas.Single(c=>c.PizzaId == id);
+        User LoggedInUser = _context.Users.Single(c=>c.UserId == (int)HttpContext.Session.GetInt32("userId"));
+        LoggedInUser.FavouritePizzas.Remove(ToRemove);
+        _context.SaveChanges();
+        return RedirectToAction("PastOrders");
+    }
+    [HttpGet("AddFavorite/{id}")]
+    public IActionResult AddFavorite(int id)
+    {
+        Pizza ToAdd = _context.Pizzas.Single(c=>c.PizzaId == id);
+        User LoggedInUser = _context.Users.Single(c=>c.UserId == (int)HttpContext.Session.GetInt32("userId"));
+        LoggedInUser.FavouritePizzas.Add(ToAdd);
+        _context.SaveChanges();
+        return RedirectToAction("PastOrders");
+    }
+    [HttpGet("RndOrder")]
+    public IActionResult RndOrder(){
+        var rand = new Random();
+        string[] Methods = new string[]{
+            "Carry-Out",
+            "Sit-Here",
+            "Delivery"
+        };
+        string[] Sizes = new string[]{
+            "Small",
+            "Medium",
+            "Large"
+        };
+        string[] Crusts = new string[]{
+            "Thin",
+            "Medium",
+            "Thick"
+        }; 
+        string[] Quantities = new string[]{
+            "One",
+            "Two",
+            "Three"
+        }; 
+        string[] Toppings = new string[]{
+            "Ham",
+            "Mushroom",
+            "Cheese",
+            "Sausage",
+            "Onion",
+            "GreenPepper",
+            "BlackOlives",
+            "FreshGarlick",
+            "Tomato",
+            "FreshBasil",
+            "Pepperoni",
+            "SeaFood"
+        }; 
+        String AddedToppings = Toppings[rand.Next(0,12)] + ","  + Toppings[rand.Next(0,12)] + "," + Toppings[rand.Next(0,12)] ;
+        Pizza NewPizza = new Pizza{
+            Method= Methods[rand.Next(0,3)],
+            Size= Sizes[rand.Next(0,3)],
+            Crust= Crusts[rand.Next(0,3)],
+            Quantity= Quantities[rand.Next(0,3)],
+            Toppings = AddedToppings,
+            UserId = (int)HttpContext.Session.GetInt32("userId")
+
+            
+        };
+        Order NewOrder = new Order{
+                TotalPrize = 20
+
+            };
+        NewPizza.Order = NewOrder;
+        NewPizza.OrderId = NewOrder.OrderId;
+        _context.Pizzas.Add(NewPizza);
+        _context.SaveChanges();
+        ViewBag.ThisPizza = NewPizza;
+        
         return View();
     }
 

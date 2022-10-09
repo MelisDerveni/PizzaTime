@@ -13,4 +13,24 @@ public class MyContext : DbContext
     // public DbSet<Monster> Monsters { get; set; } 
     public DbSet<User> Users { get; set; }
     public DbSet<Pizza> Pizzas { get; set; }
+    public DbSet<Order> Orders { get; set; }
+
+    
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+    
+        modelBuilder.Entity<Pizza>()
+        .HasOne(c=>c.Creator)
+        .WithMany(c=>c.CreatedPizzas)
+        .HasForeignKey(c=>c.UserId);
+
+        modelBuilder.Entity<Pizza>()
+        .HasOne(c=>c.Liker)
+        .WithMany(c=>c.FavouritePizzas)
+        .HasForeignKey(c=>c.LikerId);
+
+        modelBuilder.Entity<Pizza>()
+        .HasOne(c=>c.Order)
+        .WithMany(c=>c.PizzaOrdered);
+    }
 }

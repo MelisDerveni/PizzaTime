@@ -24,7 +24,11 @@ public class User
 
     [Required]
     public string State {get ; set;}
+    public int LikerId{get;set;}
+    
     public List<Pizza> FavouritePizzas { get; set; } = new List<Pizza>(); 
+    
+    public List<Pizza> CreatedPizzas {get;set;} = new List<Pizza>();
     
 
     [DataType(DataType.Password)]
@@ -39,7 +43,7 @@ public class User
     [Compare("Password")]
     [DataType(DataType.Password)]
     public string ConfirmPassword { get; set; }
- 
+
     
 }
 

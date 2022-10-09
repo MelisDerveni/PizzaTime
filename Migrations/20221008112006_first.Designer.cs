@@ -11,7 +11,7 @@ using PizzaTime.Models;
 namespace PizzaTime.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20221006025846_first")]
+    [Migration("20221008112006_first")]
     partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,26 @@ namespace PizzaTime.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("PizzaTime.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("TotalPrize")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
+                });
 
             modelBuilder.Entity("PizzaTime.Models.Pizza", b =>
                 {
@@ -34,9 +54,15 @@ namespace PizzaTime.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("LikerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Method")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Quantity")
                         .IsRequired()
@@ -52,10 +78,14 @@ namespace PizzaTime.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("PizzaId");
+
+                    b.HasIndex("LikerId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -87,6 +117,9 @@ namespace PizzaTime.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("LikerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -105,17 +138,34 @@ namespace PizzaTime.Migrations
 
             modelBuilder.Entity("PizzaTime.Models.Pizza", b =>
                 {
-                    b.HasOne("PizzaTime.Models.User", "Creator")
+                    b.HasOne("PizzaTime.Models.User", "Liker")
                         .WithMany("FavouritePizzas")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LikerId");
+
+                    b.HasOne("PizzaTime.Models.Order", "Order")
+                        .WithMany("PizzaOrdered")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("PizzaTime.Models.User", "Creator")
+                        .WithMany("CreatedPizzas")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Creator");
+
+                    b.Navigation("Liker");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("PizzaTime.Models.Order", b =>
+                {
+                    b.Navigation("PizzaOrdered");
                 });
 
             modelBuilder.Entity("PizzaTime.Models.User", b =>
                 {
+                    b.Navigation("CreatedPizzas");
+
                     b.Navigation("FavouritePizzas");
                 });
 #pragma warning restore 612, 618

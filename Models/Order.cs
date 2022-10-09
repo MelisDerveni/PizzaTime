@@ -7,6 +7,7 @@ public class Order
     [Key]
     public int OrderId { get; set;}
     public int TotalPrize{get;set;}
+    public List<Pizza> PizzaOrdered = new List<Pizza>();
     
     
 
